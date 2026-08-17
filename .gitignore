@@ -42,6 +42,7 @@ data/processed/*.parquet
 reports/figures/*.png
 models/artifacts/*.pkl
 
-# OS
+# OS & Tooling
 .DS_Store
 Thumbs.db
+catboost_info/

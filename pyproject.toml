@@ -26,6 +26,7 @@ dependencies = [
     "shap>=0.46.0",
     "streamlit>=1.38.0",
     "uvicorn[standard]>=0.30.0",
+    "xgboost>=2.1.0",
 ]
 
 [build-system]

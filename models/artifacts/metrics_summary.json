@@ -1,0 +1,71 @@
+{
+  "champion_model": "CatBoost",
+  "cv_benchmarks": {
+    "Logistic_Regression": {
+      "CV_ROC_AUC": 0.9990026100104978,
+      "CV_PR_AUC": 0.9974179500742874,
+      "CV_Brier_Score": 0.0013873737764769167
+    },
+    "Random_Forest": {
+      "CV_ROC_AUC": 0.9989418381793493,
+      "CV_PR_AUC": 0.9956747766754763,
+      "CV_Brier_Score": 0.001449251197323823
+    },
+    "LightGBM": {
+      "CV_ROC_AUC": 0.9991134150687174,
+      "CV_PR_AUC": 0.996232543164061,
+      "CV_Brier_Score": 0.0014082432524429218
+    },
+    "XGBoost": {
+      "CV_ROC_AUC": 0.9991320029663588,
+      "CV_PR_AUC": 0.997336360468907,
+      "CV_Brier_Score": 0.0013676556991413236
+    },
+    "CatBoost": {
+      "CV_ROC_AUC": 0.9992115071606746,
+      "CV_PR_AUC": 0.9977749758043134,
+      "CV_Brier_Score": 0.0013724745970655028
+    }
+  },
+  "test_metrics": {
+    "roc_auc": 0.9981694625086216,
+    "pr_auc": 0.997272744529164,
+    "brier_score_uncalibrated": 0.0014989675655905535,
+    "brier_score_calibrated": 0.0015049864942048748,
+    "ece_uncalibrated": 0.0011579534097510462,
+    "ece_calibrated": 0.0013592863003770174,
+    "optimal_threshold": 0.1,
+    "max_net_profit_saved": 617880.1,
+    "profit_lift_vs_default": 0.0
+  },
+  "feature_names": [
+    "num__CreditScore",
+    "num__Age",
+    "num__Tenure",
+    "num__Balance",
+    "num__NumOfProducts",
+    "num__HasCrCard",
+    "num__IsActiveMember",
+    "num__EstimatedSalary",
+    "num__Complain",
+    "num__SatisfactionScore",
+    "num__PointEarned",
+    "num__BalanceToSalaryRatio",
+    "num__IsZeroBalance",
+    "num__TenureToAgeRatio",
+    "num__CreditScoreToAgeRatio",
+    "num__IsMultiProductRisk",
+    "num__ComplaintInactivityRisk",
+    "num__ComplaintRisk",
+    "num__LoyaltyIndex",
+    "cat__Geography_Germany",
+    "cat__Geography_Spain",
+    "cat__Gender_Male",
+    "cat__CardType_GOLD",
+    "cat__CardType_PLATINUM",
+    "cat__CardType_SILVER",
+    "cat__WealthTier_High_Net_Worth",
+    "cat__WealthTier_Mass_Market",
+    "cat__WealthTier_Zero_Balance"
+  ]
+}
