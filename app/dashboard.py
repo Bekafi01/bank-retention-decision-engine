@@ -121,9 +121,24 @@ def load_production_artifacts():
     metrics_path = ARTIFACTS_DIR / "metrics_summary.json"
     opt_path = ARTIFACTS_DIR / "optimal_threshold.json"
 
-    model = joblib.load(champion_path) if champion_path.exists() else None
-    raw_pipeline = joblib.load(raw_path) if raw_path.exists() else None
-    explainer = BankChurnExplainer(raw_pipeline) if raw_pipeline else None
+    try:
+        model = joblib.load(champion_path)
+    except Exception as e:
+        st.error(f"❌ Champion model failed: {type(e).__name__}: {e}")
+        st.exception(e)
+        model = None
+    try:
+        raw_pipeline = joblib.load(raw_path)
+    except Exception as e:
+        st.error(f"❌ Raw pipeline failed: {type(e).__name__}: {e}")
+        st.exception(e)
+        raw_pipeline = None
+    try:
+        explainer = BankChurnExplainer(raw_pipeline)
+    except Exception as e:
+        st.error(f"❌ Explainer creation failed: {type(e).__name__}: {e}")
+        st.exception(e)
+        explainer = None
 
     metrics = {}
     if metrics_path.exists():
