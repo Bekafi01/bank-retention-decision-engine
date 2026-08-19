@@ -121,28 +121,71 @@ def load_production_artifacts():
     metrics_path = ARTIFACTS_DIR / "metrics_summary.json"
     opt_path = ARTIFACTS_DIR / "optimal_threshold.json"
 
-    model = joblib.load(champion_path) if champion_path.exists() else None
-    raw_pipeline = joblib.load(raw_path) if raw_path.exists() else None
-    explainer = BankChurnExplainer(raw_pipeline) if raw_pipeline else None
+    st.write("### Debug: Paths")
+    st.write("ROOT_DIR:", ROOT_DIR)
+    st.write("ARTIFACTS_DIR:", ARTIFACTS_DIR)
+    st.write("Champion exists:", champion_path.exists())
+    st.write("Raw pipeline exists:", raw_path.exists())
+    st.write("Metrics exists:", metrics_path.exists())
+    st.write("Threshold exists:", opt_path.exists())
+    st.write("Processed data:", PROCESSED_DATA_PATH)
+    st.write("Processed data exists:", PROCESSED_DATA_PATH.exists())
 
-    metrics = {}
-    if metrics_path.exists():
+    try:
+        model = joblib.load(champion_path)
+        st.success("Champion model loaded")
+    except Exception as e:
+        st.error(f"Champion model failed: {type(e).__name__}: {e}")
+        model = None
+
+    try:
+        raw_pipeline = joblib.load(raw_path)
+        st.success("Raw pipeline loaded")
+    except Exception as e:
+        st.error(f"Raw pipeline failed: {type(e).__name__}: {e}")
+        raw_pipeline = None
+
+    try:
+        explainer = BankChurnExplainer(raw_pipeline) if raw_pipeline else None
+        st.success("Explainer loaded")
+    except Exception as e:
+        st.error(f"Explainer failed: {type(e).__name__}: {e}")
+        explainer = None
+
+    try:
         with open(metrics_path, "r") as f:
             metrics = json.load(f)
+    except Exception as e:
+        st.error(f"Metrics failed: {type(e).__name__}: {e}")
+        metrics = {}
 
-    threshold_data = {}
-    if opt_path.exists():
+    try:
         with open(opt_path, "r") as f:
             threshold_data = json.load(f)
+    except Exception as e:
+        st.error(f"Threshold failed: {type(e).__name__}: {e}")
+        threshold_data = {}
 
     return model, raw_pipeline, explainer, metrics, threshold_data
 
 
 @st.cache_data
 def load_customer_portfolio():
-    if PROCESSED_DATA_PATH.exists():
-        return pd.read_parquet(PROCESSED_DATA_PATH)
-    return None
+    st.write("### Debug: Dataset")
+
+    st.write("Dataset path:", PROCESSED_DATA_PATH)
+    st.write("Dataset exists:", PROCESSED_DATA_PATH.exists())
+
+    if not PROCESSED_DATA_PATH.exists():
+        return None
+
+    try:
+        df = pd.read_parquet(PROCESSED_DATA_PATH)
+        st.success(f"Dataset loaded: {df.shape}")
+        return df
+    except Exception as e:
+        st.error(f"Dataset failed: {type(e).__name__}: {e}")
+        return None
 
 
 def main():
