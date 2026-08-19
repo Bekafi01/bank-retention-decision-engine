@@ -38,7 +38,6 @@ ENV/
 htmlcov/
 
 # Data & Large Files (Keep data/raw folder via .gitkeep)
-data/processed/*.parquet
 reports/figures/*.png
 
 # OS & Tooling
