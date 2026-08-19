@@ -123,46 +123,42 @@ def load_production_artifacts():
 
     try:
         model = joblib.load(champion_path)
-    except Exception as e:
-        st.error(f"❌ Champion model failed: {type(e).__name__}: {e}")
-        st.exception(e)
-        model = None
-    try:
         raw_pipeline = joblib.load(raw_path)
-    except Exception as e:
-        st.error(f"❌ Raw pipeline failed: {type(e).__name__}: {e}")
-        st.exception(e)
-        raw_pipeline = None
-    try:
         explainer = BankChurnExplainer(raw_pipeline)
+
+        metrics = {}
+        if metrics_path.exists():
+            with open(metrics_path, "r") as f:
+                metrics = json.load(f)
+
+        threshold_data = {}
+        if opt_path.exists():
+            with open(opt_path, "r") as f:
+                threshold_data = json.load(f)
+
+        return model, raw_pipeline, explainer, metrics, threshold_data
+
     except Exception as e:
-        st.error(f"❌ Explainer creation failed: {type(e).__name__}: {e}")
-        st.exception(e)
-        explainer = None
+        st.error(
+            f"❌ Failed to load production artifacts: "
+            f"{type(e).__name__}: {e}"
+        )
+        return None, None, None, {}, {}
 
-    metrics = {}
-    if metrics_path.exists():
-        with open(metrics_path, "r") as f:
-            metrics = json.load(f)
-
-    threshold_data = {}
-    if opt_path.exists():
-        with open(opt_path, "r") as f:
-            threshold_data = json.load(f)
-
-    return model, raw_pipeline, explainer, metrics, threshold_data
-
+@st.cache_data
 def load_customer_portfolio():
     if not PROCESSED_DATA_PATH.exists():
-        st.error(f"Dataset not found: {PROCESSED_DATA_PATH}")
+        st.error("❌ Customer portfolio dataset not found.")
         return None
 
     try:
-        df = pd.read_parquet(PROCESSED_DATA_PATH)
-        return df
+        return pd.read_parquet(PROCESSED_DATA_PATH)
+
     except Exception as e:
-        st.error(f"Dataset loading failed: {type(e).__name__}: {e}")
-        st.exception(e)
+        st.error(
+            f"❌ Failed to load customer portfolio: "
+            f"{type(e).__name__}: {e}"
+        )
         return None
 
 
