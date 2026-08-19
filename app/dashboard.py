@@ -152,11 +152,18 @@ def load_production_artifacts():
 
     return model, raw_pipeline, explainer, metrics, threshold_data
 
-@st.cache_data
 def load_customer_portfolio():
-    if PROCESSED_DATA_PATH.exists():
-        return pd.read_parquet(PROCESSED_DATA_PATH)
-    return None
+    if not PROCESSED_DATA_PATH.exists():
+        st.error(f"Dataset not found: {PROCESSED_DATA_PATH}")
+        return None
+
+    try:
+        df = pd.read_parquet(PROCESSED_DATA_PATH)
+        return df
+    except Exception as e:
+        st.error(f"Dataset loading failed: {type(e).__name__}: {e}")
+        st.exception(e)
+        return None
 
 
 def main():
