@@ -40,7 +40,6 @@ htmlcov/
 # Data & Large Files (Keep data/raw folder via .gitkeep)
 data/processed/*.parquet
 reports/figures/*.png
-models/artifacts/*.pkl
 
 # OS & Tooling
 .DS_Store
